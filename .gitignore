@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+
+*.db
+
+*.log
+.airflow_logs/
+dbt_project/logs/
+dbt_project/target/
+email
+dbt_project/dbt_packages/
+postgres_data/
+
+.DS_Store
+.env
