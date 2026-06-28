@@ -1,0 +1,19 @@
+{
+  "raw_etl_tables": [
+    {
+      "file_type": "csv",
+      "file_name": "/opt/airflow/data_lake/Dataset/customers.csv",
+      "target_table": "bronze_customers"
+    },
+    {
+      "file_type": "csv",
+      "file_name": "/opt/airflow/data_lake/Dataset/products.csv",
+      "target_table": "bronze_products"
+    },
+    {
+      "file_type": "json",
+      "file_name": "/opt/airflow/data_lake/Dataset/orders.json",
+      "target_table": "bronze_orders"
+    }
+  ]
+}
