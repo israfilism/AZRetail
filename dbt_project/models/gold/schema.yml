@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: gold_fct_order_items
+    description: "Satış tranzaksiyalarını saxlayan incremental Fact cədvəli, Lokal məbləğ ilə göstərilmişdir"
+    
+    columns:
+      - name: order_item_key
+        description: "(order_id + product_id) hash edilmiş surrogate key"
+        tests:
+          - unique   
+          - not_null
+
+      - name: order_id
+        description: "Sifarişin ID nömrəsi"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Müştərinin ID-si"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('gold_dim_customer')
+              field: customer_id
+
+      - name: order_status
+        description: "Sifarişin statusu"
+        tests:
+          - accepted_values:
+              values: ['CREATED', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED', 'RETRYED']
