@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: datalake_source
+    schema: datalake
+    tables:
+      - name: bronze_customers
+      - name: bronze_products
+      - name: bronze_orders
+      - name: bronze_currency
