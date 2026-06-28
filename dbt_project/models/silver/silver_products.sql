@@ -17,10 +17,7 @@ casted_and_cleaned as (
             else trim(category)
         end as category,
 
-        case 
-            when cast(unit_price as numeric(18,2)) <= 0 then null
-            else cast(unit_price as numeric(18,2))
-        end as unit_price,
+        cast(unit_price as numeric(18,2)) as unit_price,
 
         upper(trim(currency)) as currency_code,
         
@@ -50,4 +47,4 @@ select
     _ingested_silver,
     bronze_ingested_at
 from deduplicated
-where row_num = 1 and product_id is not null
+where row_num = 1 and product_id is not null and unit_price > 0
