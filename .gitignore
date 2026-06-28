@@ -11,6 +11,6 @@ email
 dbt_project/dbt_packages/
 postgres_data/
 dbt_project/.user.yml
-
+data_lake
 .DS_Store
 .env
