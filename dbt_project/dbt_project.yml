@@ -1,0 +1,16 @@
+name: 'azretail_transform'
+version: '1.0.0'
+config-version: 2
+
+profile: 'azretail_dbt'
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+
+models:
+  azretail_transform:
+    datalake:
+      +materialized: table

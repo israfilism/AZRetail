@@ -1,0 +1,12 @@
+azretail_dbt:
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: airflow
+      password: airflow
+      port: 5432
+      dbname: airflow
+      schema: datalake
+      threads: 4
+  target: dev
