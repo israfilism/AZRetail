@@ -8,8 +8,8 @@ with order_totals as (
 )
 select 
     order_month,
-    round(avg(order_amount_azn), 2)  average_order_value_azn,
-    round(sum(order_amount_azn), 2)  total_monthly_revenue_azn
+    round(avg(sum_amount_azn), 2)  average_order_value_azn,
+    round(sum(sum_amount_azn), 2)  total_monthly_revenue_azn
 from order_totals
 group by 1
 order by order_month desc;

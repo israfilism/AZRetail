@@ -11,6 +11,7 @@ totals as (
 select 
     s.order_status,
     s.unique_orders,
+    t.grand_total,
     round((s.unique_orders::numeric / nullif(t.grand_total, 0)) * 100, 2)  rate_pct
 from status_counts s
 cross join totals t
