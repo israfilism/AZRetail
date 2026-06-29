@@ -1,6 +1,7 @@
 x-airflow-common:
   &airflow-common
   image: ${AIRFLOW_IMAGE_NAME}
+  build: .
   env_file: .env
   environment:
     - DBT_PROFILES_DIR=/opt/airflow/dbt_project
