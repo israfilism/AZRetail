@@ -30,7 +30,7 @@ def fetch_page_with_retry(pages_list, target_page, max_retries=3, backoff_factor
             sleep_time = backoff_factor ** attempt
             time.sleep(sleep_time)
 
-def ingest_json(file_name, target_table):
+def ingest_json(file_name, target_table, ds):
     
     if not os.path.exists(file_name):
         raise FileNotFoundError()
@@ -52,7 +52,10 @@ def ingest_json(file_name, target_table):
             timeout_seconds=5
         )
         orders_in_page = page_payload.get("data", [])
-        all_orders.extend(orders_in_page)
+        for order in orders_in_page:
+            order_date = order.get("order_ts", "")[:10] 
+            if order_date == ds:
+                all_orders.append(order)
         current_page = page_payload.get("next_page")
         
     if not all_orders:
@@ -79,11 +82,24 @@ def ingest_json(file_name, target_table):
     
     engine = create_engine(f"postgresql+psycopg2://{user}:{password}@postgres:5432/{db}")
     
-
+    with engine.begin() as connection:
+        
+        check_table_query = text("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_schema = 'datalake' AND table_name = :table
+            );
+        """)
+        table_exists = connection.execute(check_table_query, {"table": target_table}).scalar()
+        
+        if table_exists:
+            delete_query = text(f"DELETE FROM datalake.{target_table} WHERE DATE(order_ts) = :ds")
+            connection.execute(delete_query, {"ds": ds})
+            
     df.to_sql(
         name=target_table,
-        con=engine,
+        con=engine, 
         schema='datalake',
-        if_exists='replace',
+        if_exists='append',
         index=False
     )
