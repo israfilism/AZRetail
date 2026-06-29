@@ -1,14 +1,15 @@
 {{ config(
     materialized='incremental',
+    incremental_strategy='delete+insert',
     unique_key='order_item_key',
-    incremental_strategy='merge'
+    incremental_predicates=[
+        "order_date = '" ~ var('execution_date') ~ "'"
+    ]
 ) }}
 
 with silver_orders as (
     select * from {{ ref('silver_orders') }}
-    {% if is_incremental() %}
-    where bronze_ingested_at > (select max(bronze_ingested_at) from {{ this }})
-    {% endif %}
+    where DATE(order_ts) = '{{ var("execution_date") }}'
 ),
 
 currency as (
@@ -23,8 +24,8 @@ select
     o.order_id,
     o.customer_id,
     o.product_id,
-    cast(to_char(o.order_ts, 'YYYYMMDD') as integer) as order_date_id,
     o.order_ts,
+    order_date,
     o.order_status,
     o.quantity,
     o.unit_price as original_unit_price,
@@ -33,7 +34,7 @@ select
         when o.currency_code = 'AZN' then cast(o.unit_price as numeric(18,2))
         else cast((o.unit_price * c.rate_to_azn) as numeric(18,2))
     end as unit_price_azn,
-    o.bronze_ingested_at,
+
     NOW() as _ingested_gold
 from silver_orders o
 left join currency c on o.currency_code = c.currency_code
