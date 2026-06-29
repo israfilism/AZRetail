@@ -1,4 +1,4 @@
-# 🚀 AZRetail: End-to-End Config-Driven ELT Pipeline
+# 🚀 AZRetail: End-to-End ELT Pipeline
 
 Bu layihə, pərakəndə satış (retail) məlumatlarının müxtəlif mənbələrdən (CSV, mürəkkəb JSON və xarici API-lar) avtomatlaşdırılmış şəkildə çəkilməsi, təmizlənməsi və analitik hesabata (Star Schema) qədər gətirilməsini təmin edən tam konteynerləşdirilmiş **ELT (Extract, Load, Transform)** data lakehouse arxitekturasıdır.
 
